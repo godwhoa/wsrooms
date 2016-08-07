@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 )
@@ -19,5 +18,5 @@ func main() {
 
 	http.Handle("/", router)
 
-	log.Fatal(http.ListenAndServe(*addr, nil))
+	log.Printf("http_err: %v", http.ListenAndServe(*addr, nil))
 }

@@ -7,4 +7,5 @@ Wasn't happy with an old ws server so trying to clean it up.<br>
 TODO:
 =====
 
-+ Clients talking to other clients
++ ~~Clients talking to other clients~~
++ Fix the crash

@@ -1,5 +1,11 @@
 package main
 
+import (
+	"log"
+
+	"github.com/gorilla/websocket"
+)
+
 /* Has a name, clients, count which holds the actual coutn and index which acts as the unique id */
 type Room struct {
 	name    string
@@ -10,7 +16,7 @@ type Room struct {
 
 /* Add a conn to clients map so that it can be managed */
 func (r *Room) Join(conn *websocket.Conn) int {
-	r.clients[r.index] = conn
+	r.clients[r.index] = &Client{conn, make(chan []byte), make(chan Message)}
 	log.Printf("New Client joined %s", r.name)
 	r.index++
 	r.count++
@@ -24,7 +30,7 @@ func (r *Room) SendTo(id int, msg []byte) {
 
 /* Broadcast to every client */
 func (r *Room) BroadcastAll(msg []byte) {
-	for id, client := range r.clients {
+	for _, client := range r.clients {
 		client.in <- msg
 	}
 }

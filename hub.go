@@ -1,5 +1,12 @@
 package main
 
+import (
+	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
+	"log"
+	"net/http"
+)
+
 /* Controls a bunch of rooms */
 type Hub struct {
 	hub      map[string]*Room
@@ -9,7 +16,7 @@ type Hub struct {
 /* If room doesn't exist creates it then returns it */
 func (h *Hub) GetRoom(name string) *Room {
 	if _, ok := h.hub[name]; ok {
-		return hub[name]
+		return h.hub[name]
 	} else {
 		h.hub[name] = NewRoom(name)
 		return h.hub[name]
@@ -27,10 +34,20 @@ func (h *Hub) HandleWS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer c.Close()
-
-	id := room.Join(c, room_name)
-	go room.clients[id].Read()
-	room.clients[id].Write()
+	room := h.GetRoom(room_name)
+	id := room.Join(c)
+	go func() {
+		for {
+			out := <-room.clients[id].out
+			if out.mtype == "ex" {
+				room.BroadcastEx(id, out.msg)
+			} else {
+				room.BroadcastAll(out.msg)
+			}
+		}
+	}()
+	go room.clients[id].ReadLoop()
+	room.clients[id].WriteLoop()
 }
 
 /* Constructor */
