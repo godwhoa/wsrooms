@@ -45,3 +45,11 @@ func (c *Client) WriteMessage(msg []byte) {
 		log.Println("write:", err)
 	}
 }
+
+/* Constructor */
+func NewClient(conn *websocket.Conn) *Client {
+	client := &Client{}
+	client.in = make(chan []byte)
+	client.out = make(chan Message)
+	return client
+}

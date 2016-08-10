@@ -16,7 +16,7 @@ type Room struct {
 
 /* Add a conn to clients map so that it can be managed */
 func (r *Room) Join(conn *websocket.Conn) int {
-	r.clients[r.index] = &Client{conn, make(chan []byte), make(chan Message)}
+	r.clients[r.index] = NewClient(conn)
 	log.Printf("New Client joined %s", r.name)
 	r.index++
 	r.count++
