@@ -15,12 +15,10 @@ type Hub struct {
 
 /* If room doesn't exist creates it then returns it */
 func (h *Hub) GetRoom(name string) *Room {
-	if _, ok := h.hub[name]; ok {
-		return h.hub[name]
-	} else {
+	if _, ok := h.hub[name]; !ok {
 		h.hub[name] = NewRoom(name)
-		return h.hub[name]
 	}
+	return h.hub[name]
 }
 
 /* Get ws conn. and hands it over to correct room */
@@ -36,23 +34,16 @@ func (h *Hub) HandleWS(w http.ResponseWriter, r *http.Request) {
 	defer c.Close()
 	room := h.GetRoom(room_name)
 	id := room.Join(c)
-	go func() {
-		for {
-			out := <-room.clients[id].out
-			if out.mtype == "ex" {
-				room.BroadcastEx(id, out.msg)
-			} else {
-				room.BroadcastAll(out.msg)
-			}
-		}
-	}()
+	/* Read from and write to client*/
 	go room.clients[id].ReadLoop()
-	room.clients[id].WriteLoop()
+	go room.clients[id].WriteLoop()
+	/* Reads from the client's out bound channel and broadcasts it */
+	room.HandleMsg(id)
 }
 
 /* Constructor */
 func NewHub() *Hub {
-	hub := &Hub{}
+	hub := new(Hub)
 	hub.hub = make(map[string]*Room)
 	hub.upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,

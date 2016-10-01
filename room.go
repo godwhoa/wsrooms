@@ -44,9 +44,21 @@ func (r *Room) BroadcastEx(senderid int, msg []byte) {
 	}
 }
 
+/* Handle messages */
+func (r *Room) HandleMsg(id int) {
+	for {
+		out := <-r.clients[id].out
+		if out.mtype == "ex" {
+			r.BroadcastEx(id, out.msg)
+		} else {
+			r.BroadcastAll(out.msg)
+		}
+	}
+}
+
 /* Constructor */
 func NewRoom(name string) *Room {
-	room := &Room{}
+	room := new(Room)
 	room.name = name
 	room.clients = make(map[int]*Client)
 	room.count = 0

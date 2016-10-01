@@ -26,7 +26,8 @@ func (c *Client) ReadLoop() {
 			log.Println("read:", err)
 			break
 		}
-		c.out <- Message{"ex", message}
+		msg := Message{"ex", message}
+		c.out <- msg
 	}
 }
 
@@ -48,7 +49,7 @@ func (c *Client) WriteMessage(msg []byte) {
 
 /* Constructor */
 func NewClient(conn *websocket.Conn) *Client {
-	client := &Client{}
+	client := new(Client)
 	client.in = make(chan []byte)
 	client.out = make(chan Message)
 	return client
