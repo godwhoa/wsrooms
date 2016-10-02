@@ -20,6 +20,7 @@ type Client struct {
 
 /* Reads and pumps to out channel */
 func (c *Client) ReadLoop() {
+	defer close(c.out)
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
@@ -33,6 +34,7 @@ func (c *Client) ReadLoop() {
 
 /* Reads from in channel and pumps to client */
 func (c *Client) WriteLoop() {
+	defer close(c.in)
 	for {
 		in := <-c.in
 		c.WriteMessage(in)

@@ -34,11 +34,15 @@ func (h *Hub) HandleWS(w http.ResponseWriter, r *http.Request) {
 	defer c.Close()
 	room := h.GetRoom(room_name)
 	id := room.Join(c)
-	/* Read from and write to client*/
-	go room.clients[id].ReadLoop()
+
+	/* See method comment. */
 	go room.clients[id].WriteLoop()
 	/* Reads from the client's out bound channel and broadcasts it */
-	room.HandleMsg(id)
+	go room.HandleMsg(id)
+
+	/* Reads from client and if this loop breaks then client disconnected. */
+	room.clients[id].ReadLoop()
+	delete(room.clients, id)
 }
 
 /* Constructor */
