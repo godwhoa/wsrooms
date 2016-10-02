@@ -1,8 +1,21 @@
 Websocket rooms
 ===============
 
-Wasn't happy with an old ws server so trying to clean it up.<br>
-`/ws/{room}` room based chat.
+A rewrite of an old websocket server with rooms.
+
+Testing it out
+==============
+```
+# install
+go get -v github.com/godwhoa/wsrooms
+go get -v github.com/lafikl/telsocket
+
+# run server
+go run *.go
+
+# connect the client
+telsocket -url ws://localhost:8080/ws/test
+```
 
 TODO:
 =====
