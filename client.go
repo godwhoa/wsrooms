@@ -52,6 +52,7 @@ func (c *Client) WriteMessage(msg []byte) {
 /* Constructor */
 func NewClient(conn *websocket.Conn) *Client {
 	client := new(Client)
+	client.conn = conn
 	client.in = make(chan []byte)
 	client.out = make(chan Message)
 	return client
