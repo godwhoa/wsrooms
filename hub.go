@@ -40,7 +40,7 @@ func (h *Hub) HandleWS(w http.ResponseWriter, r *http.Request) {
 
 	/* Reads from client and if this loop breaks then client disconnected. */
 	room.clients[id].ReadLoop()
-	delete(room.clients, id)
+	room.Leave(id)
 }
 
 /* Constructor */

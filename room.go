@@ -23,6 +23,12 @@ func (r *Room) Join(conn *websocket.Conn) int {
 	return r.index
 }
 
+/* Removes client from room */
+func (r *Room) Leave(id int) {
+	r.count--
+	delete(r.clients, id)
+}
+
 /* Send to specific client */
 func (r *Room) SendTo(id int, msg []byte) {
 	r.clients[id].WriteMessage(msg)
