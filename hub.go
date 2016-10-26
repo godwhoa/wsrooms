@@ -35,8 +35,6 @@ func (h *Hub) HandleWS(w http.ResponseWriter, r *http.Request) {
 	room := h.GetRoom(room_name)
 	id := room.Join(c)
 
-	/* See method comment. */
-	go room.clients[id].WriteLoop()
 	/* Reads from the client's out bound channel and broadcasts it */
 	go room.HandleMsg(id)
 

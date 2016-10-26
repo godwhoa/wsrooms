@@ -25,13 +25,13 @@ func (r *Room) Join(conn *websocket.Conn) int {
 
 /* Send to specific client */
 func (r *Room) SendTo(id int, msg []byte) {
-	r.clients[id].in <- msg
+	r.clients[id].WriteMessage(msg)
 }
 
 /* Broadcast to every client */
 func (r *Room) BroadcastAll(msg []byte) {
 	for _, client := range r.clients {
-		client.in <- msg
+		client.WriteMessage(msg)
 	}
 }
 
@@ -39,7 +39,7 @@ func (r *Room) BroadcastAll(msg []byte) {
 func (r *Room) BroadcastEx(senderid int, msg []byte) {
 	for id, client := range r.clients {
 		if id != senderid {
-			client.in <- msg
+			client.WriteMessage(msg)
 		}
 	}
 }

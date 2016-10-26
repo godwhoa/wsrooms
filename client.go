@@ -14,7 +14,6 @@ type Message struct {
 /* Reads and writes messages from client */
 type Client struct {
 	conn *websocket.Conn
-	in   chan []byte
 	out  chan Message
 }
 
@@ -32,15 +31,6 @@ func (c *Client) ReadLoop() {
 	}
 }
 
-/* Reads from in channel and pumps to client */
-func (c *Client) WriteLoop() {
-	defer close(c.in)
-	for {
-		in := <-c.in
-		c.WriteMessage(in)
-	}
-}
-
 /* Writes a message to the client */
 func (c *Client) WriteMessage(msg []byte) {
 	err := c.conn.WriteMessage(websocket.TextMessage, msg)
@@ -53,7 +43,6 @@ func (c *Client) WriteMessage(msg []byte) {
 func NewClient(conn *websocket.Conn) *Client {
 	client := new(Client)
 	client.conn = conn
-	client.in = make(chan []byte)
 	client.out = make(chan Message)
 	return client
 }
