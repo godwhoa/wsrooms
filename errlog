@@ -1,37 +1,13 @@
-➜  wsrooms git:(master) ✗ go run *.go
+➜  wsrooms git:(master) go run *.go
 New Client joined test
-http: panic serving 127.0.0.1:53028: runtime error: invalid memory address or nil pointer dereference
-goroutine 6 [running]:
-net/http.(*conn).serve.func1(0xc42007c380)
-	/usr/local/go/src/net/http/server.go:1491 +0x12a
-panic(0x654480, 0xc42000c0f0)
-	/usr/local/go/src/runtime/panic.go:458 +0x243
-main.(*Room).HandleMsg(0xc420017a70, 0x1)
-	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/room.go:50 +0x92
-main.(*Hub).HandleWS(0xc420014690, 0x7aec80, 0xc420065a00, 0xc4200c42d0)
-	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/hub.go:43 +0x35a
-main.(*Hub).HandleWS-fm(0x7aec80, 0xc420065a00, 0xc4200c42d0)
-	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/main.go:17 +0x48
-net/http.HandlerFunc.ServeHTTP(0xc42000d150, 0x7aec80, 0xc420065a00, 0xc4200c42d0)
-	/usr/local/go/src/net/http/server.go:1726 +0x44
-github.com/gorilla/mux.(*Router).ServeHTTP(0xc4200146e0, 0x7aec80, 0xc420065a00, 0xc4200c42d0)
-	/home/pacninja/Desktop/gopath/src/github.com/gorilla/mux/mux.go:109 +0x10d
-net/http.(*ServeMux).ServeHTTP(0x7c9aa0, 0x7aec80, 0xc420065a00, 0xc4200c40f0)
-	/usr/local/go/src/net/http/server.go:2022 +0x7f
-net/http.serverHandler.ServeHTTP(0xc42007c300, 0x7aec80, 0xc420065a00, 0xc4200c40f0)
-	/usr/local/go/src/net/http/server.go:2202 +0x7d
-net/http.(*conn).serve(0xc42007c380, 0x7af180, 0xc42001c4c0)
-	/usr/local/go/src/net/http/server.go:1579 +0x4b7
-created by net/http.(*Server).Serve
-	/usr/local/go/src/net/http/server.go:2293 +0x44d
 panic: runtime error: invalid memory address or nil pointer dereference
-[signal SIGSEGV: segmentation violation code=0x1 addr=0x8 pc=0x401268]
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x8 pc=0x4020b2]
 
-goroutine 8 [running]:
-panic(0x654480, 0xc42000c0f0)
+goroutine 7 [running]:
+panic(0x6543a0, 0xc42000c0f0)
 	/usr/local/go/src/runtime/panic.go:500 +0x1a1
-main.(*Client).WriteLoop(0x0)
-	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/client.go:37 +0x48
+main.(*Room).HandleMsg(0xc42001faa0, 0x1)
+	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/room.go:50 +0x92
 created by main.(*Hub).HandleWS
-	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/hub.go:41 +0x342
+	/home/pacninja/Desktop/gopath/src/github.com/godwhoa/wsrooms/hub.go:39 +0x2da
 exit status 2
