@@ -21,4 +21,4 @@ TODO:
 =====
 
 + ~~Clients talking to other clients~~
-+ Fix the crash
++ ~~Fix the crash~~
