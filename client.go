@@ -23,7 +23,7 @@ func (c *Client) ReadLoop() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			log.Println("read:", err)
+			// log.Println("read:", err)
 			break
 		}
 		msg := Message{"ex", message}

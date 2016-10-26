@@ -16,9 +16,9 @@ type Room struct {
 
 /* Add a conn to clients map so that it can be managed */
 func (r *Room) Join(conn *websocket.Conn) int {
+	r.index++
 	r.clients[r.index] = NewClient(conn)
 	log.Printf("New Client joined %s", r.name)
-	r.index++
 	r.count++
 	return r.index
 }
@@ -47,6 +47,9 @@ func (r *Room) BroadcastEx(senderid int, msg []byte) {
 /* Handle messages */
 func (r *Room) HandleMsg(id int) {
 	for {
+		if r.clients[id] == nil {
+			break
+		}
 		out := <-r.clients[id].out
 		if out.mtype == "ex" {
 			r.BroadcastEx(id, out.msg)
