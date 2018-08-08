@@ -2,6 +2,7 @@ Websocket rooms
 ===============
 
 A rewrite of an old websocket server with rooms.
+**Update**:This code is old and probably has race conditions.
 
 Testing it out
 ==============
